@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VELOUR — Premium Skincare & Wellness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#0D0D0D;--ink2:#1E1E1E;
+  --cream:#F9F5EF;--cream2:#F0EAE0;--cream3:#E5DDD0;
+  --gold:#B8975A;--gold2:#D4B07A;--gold-pale:#F2E8D5;
+  --white:#FFFFFF;--gray:#8A8680;--light:#F4F1EC;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Jost',sans-serif;
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94);
+  --ease2:cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);overflow-x:hidden;}
+img{display:block;max-width:100%;object-fit:cover;}
+a{text-decoration:none;color:inherit;}
+button{font-family:var(--sans);cursor:pointer;}
+input{font-family:var(--sans);}
+
+/* CURSOR */
+#cur{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s;}
+#cur2{position:fixed;width:32px;height:32px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .4s,height .4s,opacity .3s;opacity:.4;}
+body.hov #cur{width:18px;height:18px;background:var(--gold2);}
+body.hov #cur2{width:56px;height:56px;opacity:.15;}
+
+/* PASSWORD SCREEN */
+#pw-screen{position:fixed;inset:0;background:var(--ink);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s var(--ease),transform .6s var(--ease);}
+#pw-screen.exit{opacity:0;transform:scale(1.04);pointer-events:none;}
+.pw-bg-img{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1600&q=80');background-size:cover;background-position:center;opacity:.1;}
+.pw-rings{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.pw-ring{position:absolute;border:1px solid rgba(184,151,90,.08);border-radius:50%;}
+.pw-ring:nth-child(1){width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);}
+.pw-ring:nth-child(2){width:480px;height:480px;top:50%;left:50%;transform:translate(-50%,-50%);}
+.pw-ring:nth-child(3){width:280px;height:280px;top:50%;left:50%;transform:translate(-50%,-50%);}
+.pw-logo{font-family:var(--serif);font-size:44px;font-weight:400;color:var(--white);letter-spacing:.12em;margin-bottom:5px;position:relative;z-index:1;}
+.pw-logo em{color:var(--gold);font-style:normal;}
+.pw-sub{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:48px;position:relative;z-index:1;}
+.pw-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);padding:44px 48px;text-align:center;width:380px;position:relative;z-index:1;}
+.pw-box h2{font-family:var(--serif);font-size:22px;color:var(--white);font-weight:400;margin-bottom:8px;}
+.pw-box p{font-size:12px;color:rgba(255,255,255,.32);margin-bottom:30px;line-height:1.7;}
+.pw-in{width:100%;padding:15px 20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--white);font-size:14px;letter-spacing:.1em;text-align:center;outline:none;transition:.3s;margin-bottom:12px;}
+.pw-in:focus{border-color:var(--gold);}
+.pw-in::placeholder{color:rgba(255,255,255,.2);}
+.pw-btn{width:100%;background:var(--gold);color:var(--ink);padding:15px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;border:none;font-weight:600;transition:.3s;}
+.pw-btn:hover{background:var(--gold2);}
+.pw-err{font-size:11px;color:#E06060;margin-top:10px;min-height:16px;}
+.pw-hint{position:relative;z-index:1;font-size:10px;color:rgba(255,255,255,.18);margin-top:18px;letter-spacing:.1em;}
+
+/* POPUP */
+#pop-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:800;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s;}
+#pop-bg.on{opacity:1;pointer-events:all;}
+.popup{background:var(--white);width:680px;max-width:94vw;display:grid;grid-template-columns:1fr 1fr;position:relative;animation:popIn .5s var(--ease2);}
+@keyframes popIn{from{opacity:0;transform:translateY(18px) scale(.97);}to{opacity:1;transform:none;}}
+.pop-left{position:relative;overflow:hidden;min-height:420px;}
+.pop-left img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.pop-left-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,13,13,.2),rgba(13,13,13,.7));}
+.pop-left-content{position:absolute;bottom:32px;left:24px;right:24px;text-align:center;}
+.pop-left-logo{font-family:var(--serif);font-size:24px;color:var(--white);font-weight:400;margin-bottom:8px;}
+.pop-left-logo em{color:var(--gold);font-style:normal;}
+.pop-offer{font-family:var(--serif);font-size:54px;color:var(--gold);font-weight:700;line-height:1;}
+.pop-offer-sub{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.pop-right{padding:44px 36px;display:flex;flex-direction:column;justify-content:center;}
+.pop-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;color:var(--gray);line-height:1;padding:2px 6px;}
+.pop-right h3{font-family:var(--serif);font-size:22px;margin-bottom:7px;font-weight:400;}
+.pop-right p{font-size:12px;color:var(--gray);margin-bottom:22px;line-height:1.8;}
+.pop-field{width:100%;padding:13px 16px;border:1px solid rgba(0,0,0,.1);font-size:13px;outline:none;margin-bottom:10px;transition:.3s;}
+.pop-field:focus{border-color:var(--gold);}
+.pop-submit{width:100%;background:var(--ink);color:var(--white);padding:14px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:none;font-weight:500;transition:.3s;margin-bottom:10px;}
+.pop-submit:hover{background:var(--gold);color:var(--ink);}
+.pop-skip{background:none;border:none;font-size:10px;color:var(--gray);letter-spacing:.1em;text-transform:uppercase;width:100%;text-align:center;text-decoration:underline;}
+.pop-legal{font-size:9px;color:rgba(0,0,0,.28);text-align:center;margin-top:10px;}
+
+/* TOAST */
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--ink);color:var(--white);padding:13px 26px;font-size:12px;letter-spacing:.05em;z-index:900;opacity:0;transition:.4s var(--ease);pointer-events:none;display:flex;align-items:center;gap:9px;white-space:nowrap;}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:2.5;flex-shrink:0;}
+
+/* CART */
+#cart-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:600;opacity:0;pointer-events:none;transition:opacity .35s;}
+#cart-bg.on{opacity:1;pointer-events:all;}
+#cart{position:fixed;top:0;right:0;bottom:0;width:420px;background:var(--white);z-index:601;transform:translateX(100%);transition:transform .4s var(--ease2);display:flex;flex-direction:column;}
+#cart.on{transform:none;}
+.ch{padding:22px 28px;border-bottom:1px solid rgba(0,0,0,.07);display:flex;align-items:center;justify-content:space-between;}
+.ch-title{font-family:var(--serif);font-size:20px;font-weight:400;}
+.ch-close{background:none;border:none;font-size:24px;color:var(--gray);line-height:1;padding:2px 8px;}
+.cb{flex:1;overflow-y:auto;padding:18px 28px;}
+.cart-empty{text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.cart-empty svg{width:44px;height:44px;stroke:rgba(0,0,0,.15);fill:none;stroke-width:1;}
+.cart-empty p{font-family:var(--serif);font-size:18px;color:rgba(0,0,0,.3);}
+.ci{display:flex;gap:13px;padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid rgba(0,0,0,.06);}
+.ci-img{width:70px;height:86px;background:var(--light);flex-shrink:0;overflow:hidden;}
+.ci-img img{width:100%;height:100%;object-fit:cover;}
+.ci-name{font-family:var(--serif);font-size:14px;margin-bottom:2px;}
+.ci-var{font-size:10px;color:var(--gray);}
+.ci-price{font-size:14px;font-weight:600;margin-top:5px;}
+.ci-qty{display:flex;align-items:center;gap:9px;margin-top:7px;}
+.ci-qb{width:25px;height:25px;border:1px solid rgba(0,0,0,.1);background:none;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.ci-qb:hover{background:var(--light);}
+.ci-rm{background:none;border:none;font-size:10px;color:var(--gray);text-decoration:underline;margin-left:auto;align-self:flex-start;letter-spacing:.06em;}
+.cf{padding:18px 28px;border-top:1px solid rgba(0,0,0,.07);}
+.disc-row{display:flex;gap:8px;margin-bottom:14px;}
+.disc-in{flex:1;padding:11px 14px;border:1px solid rgba(0,0,0,.1);font-size:12px;outline:none;transition:.3s;}
+.disc-in:focus{border-color:var(--gold);}
+.disc-btn{padding:11px 18px;background:var(--light);border:1px solid rgba(0,0,0,.1);font-size:11px;letter-spacing:.08em;text-transform:uppercase;transition:.3s;}
+.disc-btn:hover{background:var(--cream3);}
+.cart-row{display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:7px;}
+.cart-row.total{color:var(--ink);font-weight:600;font-size:14px;border-top:1px solid rgba(0,0,0,.07);padding-top:10px;margin-top:4px;}
+.cart-row.total span:last-child{font-family:var(--serif);font-size:20px;font-weight:400;}
+.co-btn{width:100%;background:var(--ink);color:var(--white);padding:16px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;border:none;font-weight:500;transition:.3s;margin-top:14px;margin-bottom:9px;}
+.co-btn:hover{background:var(--gold);color:var(--ink);}
+.cc-btn{width:100%;background:none;border:1px solid rgba(0,0,0,.1);color:var(--ink);padding:13px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;transition:.3s;}
+.cc-btn:hover{border-color:var(--gold);color:var(--gold);}
+.cart-trust-bar{display:flex;justify-content:center;gap:20px;margin-top:13px;}
+.ctb-item{font-size:9px;color:var(--gray);letter-spacing:.07em;display:flex;align-items:center;gap:4px;}
+.ctb-item::before{content:'✓';color:var(--gold);}
+
+/* ANNOUNCEMENT */
+#ann{background:var(--ink);color:var(--white);text-align:center;padding:11px 40px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;position:relative;}
+#ann em{color:var(--gold);font-style:normal;}
+#ann-x{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.35);font-size:18px;line-height:1;padding:2px 6px;}
+#ann-x:hover{color:var(--white);}
+
+/* NAV */
+#nav{position:sticky;top:0;z-index:400;background:rgba(249,245,239,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.06);transition:box-shadow .3s;}
+#nav.sc{box-shadow:0 2px 20px rgba(0,0,0,.06);}
+.nav-wrap{max-width:1320px;margin:0 auto;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;position:relative;}
+.nav-left{display:flex;gap:32px;}
+.nl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);font-weight:400;position:relative;padding-bottom:3px;transition:color .3s;}
+.nl::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}
+.nl:hover{color:var(--gold);}
+.nl:hover::after{width:100%;}
+.nav-logo{font-family:var(--serif);font-size:28px;font-weight:400;letter-spacing:.1em;color:var(--ink);position:absolute;left:50%;transform:translateX(-50%);}
+.nav-logo em{color:var(--gold);font-style:normal;}
+.nav-right{display:flex;gap:8px;}
+.ni{width:38px;height:38px;border-radius:50%;background:none;border:none;display:flex;align-items:center;justify-content:center;transition:.3s;position:relative;}
+.ni:hover{background:var(--cream2);}
+.ni svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:1.5;}
+.cbadge{position:absolute;top:5px;right:5px;width:15px;height:15px;background:var(--gold);border-radius:50%;font-size:8px;color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+/* HERO */
+#hero{min-height:calc(100vh - 108px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden;position:relative;background:var(--ink);}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:100px 72px 100px 80px;position:relative;z-index:2;}
+.hl-label{display:flex;align-items:center;gap:12px;margin-bottom:26px;animation:fU .9s var(--ease) .1s both;}
+.hl-label-line{width:28px;height:1px;background:var(--gold);}
+.hl-label-text{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);}
+.hero-h1{font-family:var(--serif);font-size:clamp(46px,4.2vw,74px);color:var(--white);line-height:1.02;font-weight:400;margin-bottom:24px;animation:fU .9s var(--ease) .25s both;}
+.hero-h1 em{display:block;font-style:italic;color:var(--gold);}
+.hero-p{color:rgba(255,255,255,.44);font-size:14px;line-height:2;max-width:380px;margin-bottom:38px;font-weight:300;animation:fU .9s var(--ease) .4s both;}
+.hero-btns{display:flex;gap:14px;animation:fU .9s var(--ease) .55s both;}
+.btn-gold{background:var(--gold);color:var(--ink);padding:16px 38px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;border:none;font-weight:600;transition:.35s var(--ease);display:inline-flex;align-items:center;gap:8px;}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);}
+.btn-out{background:none;color:var(--white);padding:15px 32px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(255,255,255,.22);font-weight:400;transition:.35s;}
+.btn-out:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{display:flex;gap:34px;margin-top:58px;padding-top:42px;border-top:1px solid rgba(255,255,255,.07);animation:fU .9s var(--ease) .7s both;}
+.hs-n{font-family:var(--serif);font-size:27px;color:var(--white);font-weight:400;}
+.hs-l{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:3px;}
+.hero-right{position:relative;overflow:hidden;}
+.hero-right img{width:100%;height:100%;object-fit:cover;opacity:.65;}
+.hero-right-overlay{position:absolute;inset:0;background:linear-gradient(to right,var(--ink) 0%,rgba(13,13,13,.2) 40%,rgba(13,13,13,.1) 100%);}
+.hero-right-badge{position:absolute;bottom:48px;right:48px;width:100px;height:100px;background:rgba(184,151,90,.15);border:1px solid rgba(184,151,90,.3);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;animation:spin 22s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.hero-badge-text{font-size:7px;color:rgba(184,151,90,.7);letter-spacing:.12em;text-transform:uppercase;line-height:1.8;}
+@keyframes fU{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+.fi{opacity:0;transform:translateY(28px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.fi.on{opacity:1;transform:none;}
+.fi-d1{transition-delay:.12s!important;}
+.fi-d2{transition-delay:.24s!important;}
+.fi-d3{transition-delay:.36s!important;}
+
+/* TRUST BAR */
+.trust-bar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(0,0,0,.06);}
+.tc{display:flex;align-items:center;gap:12px;padding:21px 28px;border-right:1px solid rgba(0,0,0,.06);}
+.tc:last-child{border-right:none;}
+.tc-icon{width:40px;height:40px;background:var(--gold-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tc-icon svg{width:17px;height:17px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.tc-label{font-size:12px;font-weight:500;margin-bottom:1px;}
+.tc-sub{font-size:10px;color:var(--gray);}
+
+/* SECTION */
+.sec{padding:96px 0;}
+.si{max-width:1320px;margin:0 auto;padding:0 48px;}
+.sec-eye{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.sec-h2{font-family:var(--serif);font-size:clamp(32px,3vw,48px);font-weight:400;line-height:1.08;}
+.sec-h2 em{font-style:italic;color:var(--gold);}
+.sec-hrow{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;}
+.va{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--gray);border-bottom:1px solid var(--cream3);padding-bottom:2px;transition:.3s;display:flex;align-items:center;gap:5px;}
+.va:hover{color:var(--gold);border-color:var(--gold);}
+
+/* OFFER STRIP */
+.offer-strip{background:var(--gold);text-align:center;padding:13px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--ink);}
+
+/* COLLECTIONS */
+.cg{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:3px;background:var(--cream3);}
+.cc{position:relative;overflow:hidden;cursor:pointer;}
+.cc-img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+.cc:hover .cc-img{transform:scale(1.05);}
+.cc-wrap{height:420px;position:relative;}
+.cc:nth-child(1) .cc-wrap{height:520px;}
+.cc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,transparent 55%);transition:.4s;}
+.cc:hover .cc-overlay{background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.08) 55%);}
+.cc-info{position:absolute;bottom:0;left:0;right:0;padding:28px;}
+.cc-tag{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.cc-name{font-family:var(--serif);font-size:22px;color:var(--white);font-weight:400;margin-bottom:3px;}
+.cc-count{font-size:10px;color:rgba(255,255,255,.45);}
+.cc-arrow{position:absolute;right:22px;bottom:26px;width:36px;height:36px;border:1px solid rgba(255,255,255,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:18px;opacity:0;transform:translateX(-6px);transition:.35s;}
+.cc:hover .cc-arrow{opacity:1;transform:none;}
+
+/* PRODUCTS */
+.pbg{background:var(--cream);}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--cream3);}
+.pc{background:var(--white);position:relative;cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s;}
+.pc:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.09);}
+.pc-img{position:relative;overflow:hidden;aspect-ratio:4/5;background:var(--light);}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+.pc:hover .pc-img img{transform:scale(1.05);}
+.pbadge{position:absolute;top:13px;left:13px;padding:4px 11px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;z-index:2;}
+.b-new{background:var(--gold);color:var(--white);}
+.b-sale{background:var(--ink);color:var(--white);}
+.b-best{background:var(--ink2);color:var(--gold);}
+.b-bundle{background:rgba(255,255,255,.9);color:var(--ink);border:1px solid var(--cream3);}
+.pwish{position:absolute;top:11px;right:11px;width:34px;height:34px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;opacity:0;transform:translateY(-4px);transition:.3s;z-index:2;}
+.pc:hover .pwish{opacity:1;transform:none;}
+.pwish svg{width:14px;height:14px;stroke:var(--ink);fill:none;stroke-width:1.5;}
+.pquick{position:absolute;bottom:0;left:0;right:0;background:var(--ink);color:var(--white);padding:13px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;border:none;font-weight:500;transform:translateY(100%);transition:transform .35s var(--ease2);z-index:2;}
+.pc:hover .pquick{transform:none;}
+.pquick:hover{background:var(--gold);color:var(--ink);}
+.pi{padding:17px 18px 22px;}
+.pbrand{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);margin-bottom:5px;}
+.pstars{display:flex;align-items:center;gap:5px;margin-bottom:6px;}
+.stars{color:var(--gold);font-size:12px;letter-spacing:1.5px;}
+.rct{font-size:10px;color:var(--gray);}
+.pname{font-family:var(--serif);font-size:17px;line-height:1.3;margin-bottom:9px;}
+.ppr{display:flex;align-items:center;justify-content:space-between;}
+.p-now{font-size:15px;font-weight:600;}
+.p-was{font-size:12px;color:var(--gray);text-decoration:line-through;margin-left:6px;}
+.p-save{font-size:9px;color:var(--gold);letter-spacing:.07em;font-weight:500;}
+.pvars{display:flex;gap:5px;margin-top:9px;}
+.vd{width:14px;height:14px;border-radius:50%;border:1.5px solid transparent;cursor:pointer;transition:.2s;}
+.vd:hover,.vd.a{border-color:var(--gold);}
+
+/* WISHLIST BUTTON STATES */
+.pwish.wishlisted{opacity:1!important;transform:none!important;background:var(--gold)!important;}
+.pwish.wishlisted svg{stroke:var(--white);fill:var(--white);}
+.pwish svg{transition:fill .2s,stroke .2s;}
+
+/* WISHLIST NAV BADGE */
+.wbadge{position:absolute;top:5px;right:5px;width:15px;height:15px;background:var(--gold);border-radius:50%;font-size:8px;color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+/* WISHLIST DRAWER */
+#wl-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:600;opacity:0;pointer-events:none;transition:opacity .35s;}
+#wl-bg.on{opacity:1;pointer-events:all;}
+#wl{position:fixed;top:0;right:0;bottom:0;width:420px;background:var(--white);z-index:601;transform:translateX(100%);transition:transform .4s var(--ease2);display:flex;flex-direction:column;}
+#wl.on{transform:none;}
+.wl-head{padding:22px 28px;border-bottom:1px solid rgba(0,0,0,.07);display:flex;align-items:center;justify-content:space-between;}
+.wl-title{font-family:var(--serif);font-size:20px;font-weight:400;}
+.wl-close{background:none;border:none;font-size:24px;color:var(--gray);line-height:1;padding:2px 8px;}
+.wl-body{flex:1;overflow-y:auto;padding:18px 28px;}
+.wl-empty{text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.wl-empty svg{width:44px;height:44px;stroke:rgba(0,0,0,.15);fill:none;stroke-width:1;}
+.wl-empty p{font-family:var(--serif);font-size:18px;color:rgba(0,0,0,.3);}
+.wl-item{display:flex;gap:14px;padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid rgba(0,0,0,.06);position:relative;}
+.wl-item-img{width:72px;height:88px;background:var(--light);flex-shrink:0;overflow:hidden;}
+.wl-item-img img{width:100%;height:100%;object-fit:cover;}
+.wl-item-name{font-family:var(--serif);font-size:15px;margin-bottom:3px;}
+.wl-item-price{font-size:14px;font-weight:600;color:var(--gold);margin-bottom:10px;}
+.wl-item-atc{background:var(--ink);color:var(--white);border:none;padding:9px 18px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;transition:.3s;cursor:pointer;}
+.wl-item-atc:hover{background:var(--gold);color:var(--ink);}
+.wl-item-remove{position:absolute;top:0;right:0;background:none;border:none;font-size:18px;color:var(--gray);cursor:pointer;line-height:1;padding:2px 4px;transition:.2s;}
+.wl-item-remove:hover{color:var(--ink);}
+.wl-foot{padding:18px 28px;border-top:1px solid rgba(0,0,0,.07);}
+.wl-atc-all{width:100%;background:var(--ink);color:var(--white);padding:15px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:none;font-weight:500;transition:.3s;margin-bottom:10px;}
+.wl-atc-all:hover{background:var(--gold);color:var(--ink);}
+.wl-continue{width:100%;background:none;border:1px solid rgba(0,0,0,.1);color:var(--ink);padding:13px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;transition:.3s;}
+.wl-continue:hover{border-color:var(--gold);color:var(--gold);}
+
+/* HIGHLIGHT */
+.hl-sec{background:var(--cream2);}
+.hl-in{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:560px;}
+.hl-left{padding:80px 80px;display:flex;flex-direction:column;justify-content:center;}
+.hl-tag{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.hl-title{font-family:var(--serif);font-size:clamp(30px,2.8vw,46px);font-weight:400;line-height:1.12;margin-bottom:18px;}
+.hl-title em{font-style:italic;color:var(--gold);}
+.hl-desc{font-size:13px;color:var(--gray);line-height:1.95;margin-bottom:26px;font-weight:300;}
+.hl-checks{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:34px;}
+.hl-checks li{font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:9px;}
+.hl-ck{color:var(--gold);font-size:14px;}
+.hl-right{position:relative;overflow:hidden;}
+.hl-right img{width:100%;height:100%;object-fit:cover;}
+.hl-right-overlay{position:absolute;inset:0;background:linear-gradient(to right,var(--cream2) 0%,transparent 30%);}
+.hl-price-tag{position:absolute;top:32px;right:32px;background:var(--gold);color:var(--ink);padding:18px 22px;text-align:center;}
+.hl-price-tag .hpt-price{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1;}
+.hl-price-tag .hpt-sub{font-size:8px;letter-spacing:.15em;text-transform:uppercase;margin-top:3px;}
+.hl-price-tag .hpt-was{font-size:10px;text-decoration:line-through;opacity:.6;margin-bottom:2px;}
+
+/* BRAND USP */
+.brand-sec{background:var(--ink);}
+.brand-in{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:680px;}
+.brand-left{padding:96px 72px 96px 80px;display:flex;flex-direction:column;justify-content:center;}
+.brand-left .sec-h2{color:var(--white);margin-bottom:20px;}
+.brand-desc{color:rgba(255,255,255,.42);font-size:14px;line-height:2;margin-bottom:34px;font-weight:300;}
+.busp{display:flex;flex-direction:column;gap:17px;margin-bottom:42px;}
+.busp-item{display:flex;gap:14px;}
+.busp-tick{width:20px;height:20px;min-width:20px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.busp-tick svg{width:9px;height:9px;stroke:var(--gold);fill:none;stroke-width:2.5;}
+.busp-txt{font-size:13px;color:rgba(255,255,255,.58);line-height:1.7;}
+.busp-txt strong{color:rgba(255,255,255,.9);font-weight:500;}
+.brand-right{position:relative;overflow:hidden;}
+.brand-right img{width:100%;height:100%;object-fit:cover;opacity:.5;}
+.brand-right-overlay{position:absolute;inset:0;background:linear-gradient(to left,rgba(13,13,13,.3),rgba(13,13,13,.8));}
+.brand-stats-grid{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;border-left:1px solid rgba(255,255,255,.04);}
+.bsc{padding:44px 32px;border-bottom:1px solid rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:11px;background:rgba(13,13,13,.6);}
+.bsc:nth-child(2n){border-right:none;}
+.bsc:nth-child(3),.bsc:nth-child(4){border-bottom:none;}
+.bsc-icon{width:42px;height:42px;border:1px solid rgba(184,151,90,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.bsc-icon svg{width:19px;height:19px;stroke:rgba(184,151,90,.5);fill:none;stroke-width:1;}
+.bsc-n{font-family:var(--serif);font-size:32px;color:var(--gold);font-weight:400;}
+.bsc-l{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:rgba(255,255,255,.24);}
+
+/* TESTIMONIALS */
+.tbg{background:var(--cream);}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.tcard{background:var(--white);padding:34px;transition:.3s;}
+.tcard:hover{box-shadow:0 10px 40px rgba(0,0,0,.06);}
+.tq{font-family:var(--serif);font-size:78px;color:var(--gold-pale);line-height:.6;display:block;margin-bottom:15px;}
+.tstars{color:var(--gold);font-size:13px;letter-spacing:1.5px;margin-bottom:13px;}
+.ttxt{font-family:var(--serif);font-size:15px;font-weight:400;line-height:1.8;color:var(--ink2);margin-bottom:20px;font-style:italic;}
+.tline{width:28px;height:1px;background:var(--gold);margin-bottom:17px;}
+.tau{display:flex;align-items:center;gap:11px;}
+.tav{width:40px;height:40px;border-radius:50%;background:var(--gold-pale);overflow:hidden;flex-shrink:0;}
+.tav img{width:100%;height:100%;object-fit:cover;}
+.tav-init{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--gold);}
+.tau-name{font-size:13px;font-weight:500;}
+.tau-tag{font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-top:1px;}
+.tagg{display:flex;align-items:center;justify-content:center;gap:32px;margin-bottom:50px;padding:30px;background:var(--white);border:1px solid rgba(0,0,0,.06);}
+.tagg-n{font-family:var(--serif);font-size:50px;font-weight:400;}
+.tagg-s{font-size:22px;color:var(--gold);letter-spacing:3px;}
+.tagg-l{font-size:10px;color:var(--gray);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;}
+.tagg-div{width:1px;height:58px;background:rgba(0,0,0,.08);}
+
+/* FAQ */
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+.faq-col{display:flex;flex-direction:column;}
+.faq-item{border-bottom:1px solid rgba(0,0,0,.07);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:19px 0;font-size:14px;font-weight:500;cursor:pointer;gap:16px;transition:color .3s;}
+.faq-q:hover{color:var(--gold);}
+.faq-icon{width:22px;height:22px;min-width:22px;border:1px solid rgba(0,0,0,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;transition:.3s;color:var(--gray);}
+.faq-item.op .faq-icon{transform:rotate(45deg);border-color:var(--gold);color:var(--gold);}
+.faq-a{font-size:13px;color:var(--gray);line-height:1.9;max-height:0;overflow:hidden;transition:max-height .4s var(--ease),padding .3s;}
+.faq-item.op .faq-a{max-height:200px;padding-bottom:18px;}
+
+/* NEWSLETTER */
+.nl-sec{background:var(--ink);padding:96px 0;}
+.nl-in{max-width:640px;margin:0 auto;text-align:center;padding:0 24px;}
+.nl-eye{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.nl-h2{font-family:var(--serif);font-size:clamp(36px,4vw,58px);color:var(--white);font-weight:400;line-height:1.08;margin-bottom:14px;}
+.nl-h2 em{font-style:italic;color:var(--gold);}
+.nl-sub{color:rgba(255,255,255,.38);font-size:13px;margin-bottom:38px;line-height:1.8;font-weight:300;}
+.nl-form{display:flex;max-width:420px;margin:0 auto 22px;}
+.nl-inp{flex:1;padding:16px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-right:none;color:var(--white);font-size:13px;outline:none;transition:.3s;}
+.nl-inp:focus{border-color:var(--gold);}
+.nl-inp::placeholder{color:rgba(255,255,255,.22);}
+.nl-btn{background:var(--gold);color:var(--ink);padding:16px 24px;border:none;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;transition:.3s;white-space:nowrap;}
+.nl-btn:hover{background:var(--gold2);}
+.nl-perks{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;}
+.nl-perk{font-size:10px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:5px;}
+.nl-perk::before{content:'✓';color:var(--gold);}
+
+/* STICKY ATC */
+#satc{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid rgba(0,0,0,.08);padding:13px 80px;display:flex;align-items:center;justify-content:space-between;z-index:300;transform:translateY(100%);transition:transform .4s var(--ease2);}
+#satc.on{transform:none;}
+.satc-left{display:flex;align-items:center;gap:14px;}
+.satc-img{width:48px;height:58px;background:var(--light);overflow:hidden;flex-shrink:0;}
+.satc-img img{width:100%;height:100%;object-fit:cover;}
+.satc-name{font-family:var(--serif);font-size:16px;}
+.satc-price{font-size:14px;font-weight:600;color:var(--gold);}
+.satc-btn{background:var(--ink);color:var(--white);padding:13px 42px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;border:none;font-weight:500;transition:.3s;}
+.satc-btn:hover{background:var(--gold);color:var(--ink);}
+
+/* FOOTER */
+footer{background:var(--ink2);}
+.fm{max-width:1320px;margin:0 auto;padding:68px 48px 44px;display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:48px;}
+.f-logo{font-family:var(--serif);font-size:28px;font-weight:400;margin-bottom:12px;}
+.f-logo em{color:var(--gold);font-style:normal;}
+.f-tag{color:rgba(255,255,255,.3);font-size:12px;line-height:1.95;margin-bottom:22px;font-weight:300;}
+.f-soc{display:flex;gap:9px;}
+.fs{width:36px;height:36px;border:1px solid rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.3s;}
+.fs:hover{border-color:var(--gold);background:rgba(184,151,90,.1);}
+.fs svg{width:14px;height:14px;stroke:rgba(255,255,255,.45);fill:none;stroke-width:1.5;}
+.f-h{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:18px;}
+.f-links{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.f-links a{font-size:12px;color:rgba(255,255,255,.46);transition:.3s;}
+.f-links a:hover{color:var(--gold);}
+.f-nl h4{font-family:var(--serif);font-size:17px;color:var(--white);font-weight:400;margin-bottom:7px;}
+.f-nl p{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:14px;line-height:1.8;}
+.f-nl-form{display:flex;flex-direction:column;gap:7px;}
+.f-nl-in{padding:12px 15px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--white);font-size:12px;outline:none;transition:.3s;}
+.f-nl-in::placeholder{color:rgba(255,255,255,.2);}
+.f-nl-in:focus{border-color:var(--gold);}
+.f-nl-btn{background:var(--gold);color:var(--ink);padding:12px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;border:none;font-weight:600;transition:.3s;}
+.f-nl-btn:hover{background:var(--gold2);}
+.fb{border-top:1px solid rgba(255,255,255,.05);padding:18px 48px;max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;}
+.f-copy{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.04em;}
+.f-pay{display:flex;gap:6px;}
+.ptag{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:4px 10px;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.04em;}
+.f-pol{display:flex;gap:18px;}
+.f-pol a{font-size:10px;color:rgba(255,255,255,.22);transition:.3s;}
+.f-pol a:hover{color:var(--gold);}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .nav-left,.nav-logo+.nav-right .ni:not(:last-child){display:none;}
+  .nav-logo{position:static;transform:none;}
+  .nav-wrap{padding:0 24px;}
+  #hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-right{height:300px;}
+  .hero-left{padding:56px 28px;}
+  .pg{grid-template-columns:repeat(2,1fr);}
+  .tg,.faq-grid,.brand-in,.cg,.hl-in,.fm{grid-template-columns:1fr;}
+  .brand-stats-grid{position:relative;background:rgba(13,13,13,.9);}
+  .brand-right{min-height:300px;}
+  .trust-bar{grid-template-columns:1fr 1fr;}
+  .si{padding:0 24px;}
+  #satc{padding:12px 24px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- ===================== PASSWORD ===================== -->
+<div id="pw-screen">
+  <div class="pw-bg-img"></div>
+  <div class="pw-rings">
+    <div class="pw-ring"></div><div class="pw-ring"></div><div class="pw-ring"></div>
+  </div>
+  <div class="pw-logo">VELOUR<em>.</em></div>
+  <div class="pw-sub">Premium Skincare &amp; Wellness</div>
+  <div class="pw-box">
+    <h2>Store is Password Protected</h2>
+    <p>Enter the password to access this exclusive preview store.</p>
+    <input class="pw-in" type="password" id="pw-in" placeholder="Enter password" maxlength="30"/>
+    <button class="pw-btn" onclick="checkPw()">Unlock Store →</button>
+    <div class="pw-err" id="pw-err"></div>
+  </div>
+  <div class="pw-hint">Hint: Test@123</div>
+</div>
+
+<!-- ===================== POPUP ===================== -->
+<div id="pop-bg">
+  <div class="popup">
+    <button class="pop-close" onclick="closePop()">×</button>
+    <div class="pop-left">
+      <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&q=80" alt="Skincare popup"/>
+      <div class="pop-left-overlay"></div>
+      <div class="pop-left-content">
+        <div class="pop-left-logo">VELOUR<em>.</em></div>
+        <div class="pop-offer">10%</div>
+        <div class="pop-offer-sub">Off Your First Order</div>
+      </div>
+    </div>
+    <div class="pop-right">
+      <h3>Welcome to VELOUR.</h3>
+      <p>Subscribe for exclusive skincare rituals, early access to new launches, and a personal welcome discount.</p>
+      <input class="pop-field" type="text" placeholder="Your first name" id="pop-name"/>
+      <input class="pop-field" type="email" placeholder="Email address" id="pop-email"/>
+      <button class="pop-submit" onclick="submitPop()">Claim My 10% Off</button>
+      <button class="pop-skip" onclick="closePop()">No thanks, I'll pay full price</button>
+      <div class="pop-legal">🔒 We respect your privacy. Unsubscribe anytime.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">Added to cart!</span>
+</div>
+
+<!-- ===================== CART ===================== -->
+<div id="cart-bg" onclick="closeCart()"></div>
+<div id="cart">
+  <div class="ch">
+    <span class="ch-title">Your Bag (<span id="cc">0</span>)</span>
+    <button class="ch-close" onclick="closeCart()">×</button>
+  </div>
+  <div class="cb" id="cb">
+    <div class="cart-empty">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <p>Your bag is empty</p>
+    </div>
+  </div>
+  <div class="cf">
+    <div class="disc-row">
+      <input class="disc-in" type="text" placeholder="Discount code (VELOUR10)" id="disc-code"/>
+      <button class="disc-btn" onclick="applyDisc()">Apply</button>
+    </div>
+    <div class="cart-row"><span>Subtotal</span><span id="csub">₹0</span></div>
+    <div class="cart-row"><span>Shipping</span><span id="cship">Free</span></div>
+    <div class="cart-row total"><span>Total</span><span id="ctotal">₹0</span></div>
+    <button class="co-btn" onclick="toast('Redirecting to secure checkout…')">Proceed to Checkout →</button>
+    <button class="cc-btn" onclick="closeCart()">Continue Shopping</button>
+    <div class="cart-trust-bar">
+      <span class="ctb-item">Secure Checkout</span>
+      <span class="ctb-item">Free Returns</span>
+      <span class="ctb-item">100% Natural</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== WISHLIST DRAWER ===================== -->
+<div id="wl-bg" onclick="closeWL()"></div>
+<div id="wl">
+  <div class="wl-head">
+    <span class="wl-title">Wishlist (<span id="wlc">0</span>)</span>
+    <button class="wl-close" onclick="closeWL()">×</button>
+  </div>
+  <div class="wl-body" id="wl-body">
+    <div class="wl-empty">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <p>Your wishlist is empty</p>
+    </div>
+  </div>
+  <div class="wl-foot" id="wl-foot" style="display:none;">
+    <button class="wl-atc-all" onclick="addAllToCart()">Add All to Cart →</button>
+    <button class="wl-continue" onclick="closeWL()">Continue Shopping</button>
+  </div>
+</div>
+
+<!-- ===================== STORE ===================== -->
+<div id="store" style="display:none;">
+
+<!-- ANNOUNCEMENT -->
+<div id="ann">
+  ✦ &nbsp;Free shipping on orders above <em>₹999</em>&nbsp; | &nbsp;Use code <em>VELOUR10</em> for 10% off&nbsp; | &nbsp;30-Day hassle-free returns&nbsp; ✦
+  <button id="ann-x" onclick="document.getElementById('ann').remove()">×</button>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-wrap">
+    <div class="nav-left">
+      <a class="nl" href="#collections">Shop</a>
+      <a class="nl" href="#collections">Collections</a>
+      <a class="nl" href="#brand">About</a>
+      <a class="nl" href="#faq">FAQ</a>
+      <a class="nl" href="#nlsec">Journal</a>
+    </div>
+    <a href="#" class="nav-logo">VELOUR<em>.</em></a>
+    <div class="nav-right">
+      <button class="ni"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+      <button class="ni"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+      <button class="ni" onclick="openWL()" title="Wishlist" style="position:relative;">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="wbadge" id="wl-badge" style="display:none">0</span>
+      </button>
+      <button class="ni" onclick="openCart()">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cbadge" id="cbadge" style="display:none">0</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hl-label"><div class="hl-label-line"></div><div class="hl-label-text">New Collection — 2025</div></div>
+    <h1 class="hero-h1">Skincare<br/>Rooted in<br/><em>Ritual.</em></h1>
+    <p class="hero-p">Premium clean beauty formulated with the purest botanicals on earth. Dermatologist-tested, cruelty-free, and crafted to transform your daily routine into a sacred moment.</p>
+    <div class="hero-btns">
+      <button class="btn-gold" onclick="gs('#products')">Shop Now &nbsp;→</button>
+      <button class="btn-out" onclick="gs('#brand')">Our Story</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hs-n">14K+</div><div class="hs-l">Happy Customers</div></div>
+      <div><div class="hs-n">4.9★</div><div class="hs-l">Avg Rating</div></div>
+      <div><div class="hs-n">100%</div><div class="hs-l">Natural</div></div>
+      <div><div class="hs-n">48H</div><div class="hs-l">Dispatch</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=1200&q=85" alt="Premium skincare hero"/>
+    <div class="hero-right-overlay"></div>
+    <div class="hero-right-badge"><div class="hero-badge-text">CLEAN<br/>BEAUTY<br/>✦<br/>2025</div></div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar fi">
+  <div class="tc"><div class="tc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="tc-label">Secure Checkout</div><div class="tc-sub">SSL 256-bit Encrypted</div></div></div>
+  <div class="tc"><div class="tc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div><div class="tc-label">Free Shipping</div><div class="tc-sub">On all orders ₹999+</div></div></div>
+  <div class="tc"><div class="tc-icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div><div><div class="tc-label">Easy Returns</div><div class="tc-sub">30-day hassle-free</div></div></div>
+  <div class="tc"><div class="tc-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="tc-label">24/7 Support</div><div class="tc-sub">We're always here</div></div></div>
+</div>
+
+<!-- OFFER STRIP -->
+<div class="offer-strip fi">🎁 &nbsp; BUY 2 GET 1 FREE on all serums &nbsp;|&nbsp; Free gift wrap on orders ₹1,499+ &nbsp;|&nbsp; Subscribe &amp; Save 15% every month &nbsp; 🎁</div>
+
+<!-- ===================== COLLECTIONS ===================== -->
+<section class="sec" id="collections" style="padding-bottom:0;">
+  <div class="si">
+    <div class="sec-hrow fi">
+      <div><div class="sec-eye">Browse By Category</div><div class="sec-h2">Shop <em>Collections</em></div></div>
+      <a href="#products" class="va">View All Collections →</a>
+    </div>
+  </div>
+  <div class="cg fi">
+    <!-- Skincare -->
+    <div class="cc">
+      <div class="cc-wrap">
+        <img class="cc-img" src="https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=800&q=80" alt="Skincare collection"/>
+        <div class="cc-overlay"></div>
+        <div class="cc-info">
+          <div class="cc-tag">Bestsellers</div>
+          <div class="cc-name">Skincare Essentials</div>
+          <div class="cc-count">18 Products</div>
+        </div>
+        <div class="cc-arrow">→</div>
+      </div>
+    </div>
+    <!-- Wellness -->
+    <div class="cc">
+      <div class="cc-wrap">
+        <img class="cc-img" src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=700&q=80" alt="Wellness collection"/>
+        <div class="cc-overlay"></div>
+        <div class="cc-info">
+          <div class="cc-tag">Most Popular</div>
+          <div class="cc-name">Wellness &amp; Body</div>
+          <div class="cc-count">12 Products</div>
+        </div>
+        <div class="cc-arrow">→</div>
+      </div>
+    </div>
+    <!-- Aromatherapy -->
+    <div class="cc">
+      <div class="cc-wrap">
+        <img class="cc-img" src="https://images.unsplash.com/photo-1591160690555-5debfba289f0?w=700&q=80" alt="Aromatherapy collection"/>
+        <div class="cc-overlay"></div>
+        <div class="cc-info">
+          <div class="cc-tag">New Arrivals</div>
+          <div class="cc-name">Aromatherapy</div>
+          <div class="cc-count">9 Products</div>
+        </div>
+        <div class="cc-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRODUCTS ===================== -->
+<section class="sec pbg" id="products">
+  <div class="si">
+    <div class="sec-hrow fi"><div><div class="sec-eye">Handpicked For You</div><div class="sec-h2">Best <em>Sellers</em></div></div><a href="#" class="va">Shop All Products →</a></div>
+  </div>
+  <div class="si">
+    <div class="pg fi">
+
+      <!-- P1 Radiance Serum -->
+      <div class="pc">
+        <div class="pc-img"><span class="pbadge b-new">New</span>
+          <button class="pwish" onclick="toggleWish(this)" data-name="Radiance Glow Serum" data-price="1299" data-img="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200&q=80"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80" alt="Radiance Glow Serum"/>
+          <button class="pquick" onclick="addToCart('Radiance Glow Serum',1299,'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200&q=80')">Quick Add — ₹1,299</button>
+        </div>
+        <div class="pi">
+          <div class="pbrand">VELOUR · CO</div>
+          <div class="pstars"><span class="stars">★★★★★</span><span class="rct">4.9 (284)</span></div>
+          <div class="pname">Radiance Glow Serum 30ml</div>
+          <div class="ppr"><div><span class="p-now">₹1,299</span><span class="p-was">₹1,899</span></div><span class="p-save">Save 32%</span></div>
+          <div class="pvars"><div class="vd a" style="background:#F5E6C8;"></div><div class="vd" style="background:#E0C898;"></div><div class="vd" style="background:#C8A868;"></div></div>
+        </div>
+      </div>
+
+      <!-- P2 Face Oil -->
+      <div class="pc">
+        <div class="pc-img"><span class="pbadge b-sale">Sale</span>
+          <button class="pwish" onclick="toggleWish(this)" data-name="Calm & Restore Face Oil" data-price="899" data-img="https://images.unsplash.com/photo-1617897903246-719242758050?w=200&q=80"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1617897903246-719242758050?w=600&q=80" alt="Calm Face Oil"/>
+          <button class="pquick" onclick="addToCart('Calm & Restore Face Oil',899,'https://images.unsplash.com/photo-1617897903246-719242758050?w=200&q=80')">Quick Add — ₹899</button>
+        </div>
+        <div class="pi">
+          <div class="pbrand">VELOUR · CO</div>
+          <div class="pstars"><span class="stars">★★★★★</span><span class="rct">4.8 (196)</span></div>
+          <div class="pname">Calm &amp; Restore Face Oil</div>
+          <div class="ppr"><div><span class="p-now">₹899</span><span class="p-was">₹1,299</span></div><span class="p-save">Save 31%</span></div>
+        </div>
+      </div>
+
+      <!-- P3 Candle -->
+      <div class="pc">
+        <div class="pc-img"><span class="pbadge b-best">Bestseller</span>
+          <button class="pwish" onclick="toggleWish(this)" data-name="Lavender Dream Candle" data-price="749" data-img="https://images.unsplash.com/photo-1603006905003-be475563bc59?w=200&q=80"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?w=600&q=80" alt="Lavender Candle"/>
+          <button class="pquick" onclick="addToCart('Lavender Dream Candle',749,'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=200&q=80')">Quick Add — ₹749</button>
+        </div>
+        <div class="pi">
+          <div class="pbrand">VELOUR · CO</div>
+          <div class="pstars"><span class="stars">★★★★☆</span><span class="rct">4.7 (152)</span></div>
+          <div class="pname">Lavender Dream Candle 200g</div>
+          <div class="ppr"><div><span class="p-now">₹749</span></div></div>
+        </div>
+      </div>
+
+      <!-- P4 Sheet Mask -->
+      <div class="pc">
+        <div class="pc-img">
+          <button class="pwish" onclick="toggleWish(this)" data-name="Deep Hydration Mask" data-price="999" data-img="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=200&q=80"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&q=80" alt="Deep Hydration Mask"/>
+          <button class="pquick" onclick="addToCart('Deep Hydration Mask',999,'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=200&q=80')">Quick Add — ₹999</button>
+        </div>
+        <div class="pi">
+          <div class="pbrand">VELOUR · CO</div>
+          <div class="pstars"><span class="stars">★★★★★</span><span class="rct">4.9 (88)</span></div>
+          <div class="pname">Deep Hydration Sheet Mask</div>
+          <div class="ppr"><div><span class="p-now">₹999</span><span class="p-was">₹1,299</span></div><span class="p-save">Save 23%</span></div>
+        </div>
+      </div>
+
+      <!-- P5 Vitamin C -->
+      <div class="pc">
+        <div class="pc-img"><span class="pbadge b-new">New</span>
+          <button class="pwish" onclick="toggleWish(this)" data-name="Vitamin C Brightening Kit" data-price="1849" data-img="https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?w=200&q=80"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?w=600&q=80" alt="Vitamin C Brightening Kit"/>
+          <button class="pquick" onclick="addToCart('Vitamin C Brightening Kit',1849,'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?w=200&q=80')">Quick Add — ₹1,849</button>
+        </div>
+        <div class="pi">
+          <div class="pbrand">VELOUR · CO</div>
+          <div class="pstars"><span class="stars">★★★★★</span><span class="rct">5.0 (42)</span></div>
+          <div class="pname">Vitamin C Brightening Kit</div>
+          <div class="ppr"><div><span class="p-now">₹1,849</span></div></div>
+        </div>
+      </div>
+
+      <!-- P6 Bundle -->
+      <div class="pc">
+        <div class="pc-img"><span class="pbadge b-bundle">Bundle</span>
+          <button class="pwish" onclick="toggleWish(this)" data-name="Starter Skincare Bundle" data-price="2499" data-img="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&q=80"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=600&q=80" alt="Starter Skincare Bundle"/>
+          <button class="pquick" onclick="addToCart('Starter Skincare Bundle',2499,'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&q=80')">Quick Add — ₹2,499</button>
+        </div>
+        <div class="pi">
+          <div class="pbrand">VELOUR · CO</div>
+          <div class="pstars"><span class="stars">★★★★★</span><span class="rct">4.8 (310)</span></div>
+          <div class="pname">Starter Skincare Bundle (3-piece)</div>
+          <div class="ppr"><div><span class="p-now">₹2,499</span><span class="p-was">₹3,847</span></div><span class="p-save">Save 35%</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HIGHLIGHT ===================== -->
+<section class="hl-sec">
+  <div class="hl-in">
+    <div class="hl-left fi">
+      <div class="hl-tag">Product Spotlight</div>
+      <div class="hl-title">The Serum That<br/>Changed <em>Everything.</em></div>
+      <p class="hl-desc">Formulated with 12 active botanicals, our Radiance Glow Serum has earned a 4.9-star rating from over 280 verified customers. Visible results in 14 days — or your money back.</p>
+      <ul class="hl-checks">
+        <li><span class="hl-ck">✓</span> Visibly reduces dark spots in 14 days</li>
+        <li><span class="hl-ck">✓</span> 100% vegan, cruelty-free &amp; paraben-free formula</li>
+        <li><span class="hl-ck">✓</span> Dermatologist tested — safe for all skin types</li>
+        <li><span class="hl-ck">✓</span> Sustainably sourced &amp; recyclable glass packaging</li>
+        <li><span class="hl-ck">✓</span> 30-day full satisfaction guarantee</li>
+      </ul>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <button class="btn-gold" onclick="addToCart('Radiance Glow Serum',1299,'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200&q=80')">Add to Cart — ₹1,299</button>
+        <span style="font-size:11px;color:var(--gray);">Compare at <span style="text-decoration:line-through;">₹1,899</span></span>
+      </div>
+    </div>
+    <div class="hl-right fi fi-d2">
+      <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&q=80" alt="Featured serum product"/>
+      <div class="hl-right-overlay"></div>
+      <div class="hl-price-tag">
+        <div class="hpt-was">₹1,899</div>
+        <div class="hpt-price">₹1,299</div>
+        <div class="hpt-sub">Only</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BRAND / USP ===================== -->
+<section class="brand-sec" id="brand">
+  <div class="brand-in">
+    <div class="brand-left fi">
+      <div class="sec-eye">Our Philosophy</div>
+      <div class="sec-h2" style="color:var(--white);margin-bottom:20px;">Beauty rooted<br/>in <em>nature's</em> truth.</div>
+      <p class="brand-desc">Every VELOUR product begins with a single question: would we put this on our own skin? Formulated with ethically sourced botanicals, tested without cruelty, and packaged with the planet in mind.</p>
+      <div class="busp">
+        <div class="busp-item"><div class="busp-tick"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div><div class="busp-txt"><strong>100% Natural &amp; Clean</strong> — Free from parabens, sulfates &amp; synthetic fragrance</div></div>
+        <div class="busp-item"><div class="busp-tick"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div><div class="busp-txt"><strong>Certified Cruelty-Free &amp; Vegan</strong> — PETA approved, Leaping Bunny certified</div></div>
+        <div class="busp-item"><div class="busp-tick"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div><div class="busp-txt"><strong>Sustainable by Design</strong> — Recycled glass, FSC-certified paper, carbon-neutral shipping</div></div>
+        <div class="busp-item"><div class="busp-tick"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div><div class="busp-txt"><strong>30-Day Satisfaction Guarantee</strong> — Not in love? Full refund, no questions asked</div></div>
+      </div>
+      <button class="btn-gold">Discover Our Story →</button>
+    </div>
+    <div class="brand-right fi fi-d2">
+      <img src="https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=900&q=80" alt="Natural botanical ingredients"/>
+      <div class="brand-right-overlay"></div>
+      <div class="brand-stats-grid">
+        <div class="bsc"><div class="bsc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="bsc-n">100%</div><div class="bsc-l">Natural</div></div>
+        <div class="bsc"><div class="bsc-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="bsc-n">4.9★</div><div class="bsc-l">Avg Rating</div></div>
+        <div class="bsc"><div class="bsc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="bsc-n">14K+</div><div class="bsc-l">Customers</div></div>
+        <div class="bsc"><div class="bsc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="bsc-n">48H</div><div class="bsc-l">Dispatch</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="sec tbg">
+  <div class="si">
+    <div class="sec-hrow fi"><div><div class="sec-eye">Verified Reviews</div><div class="sec-h2">What Our <em>Customers</em> Say</div></div><a href="#" class="va">Read All Reviews →</a></div>
+    <div class="tagg fi">
+      <div style="text-align:center;"><div class="tagg-n">4.9</div><div class="tagg-s">★★★★★</div><div class="tagg-l">Average Rating</div></div>
+      <div class="tagg-div"></div>
+      <div style="text-align:center;"><div class="tagg-n" style="font-size:40px;">730+</div><div class="tagg-l">Verified Reviews</div></div>
+      <div class="tagg-div"></div>
+      <div style="text-align:center;"><div class="tagg-n" style="font-size:40px;">98%</div><div class="tagg-l">Would Recommend</div></div>
+    </div>
+    <div class="tg fi">
+      <div class="tcard">
+        <span class="tq">"</span>
+        <div class="tstars">★★★★★</div>
+        <p class="ttxt">The Radiance Serum genuinely transformed my skin. I've tried dozens of products and nothing compares. Visible difference in just 10 days — I'm never going back.</p>
+        <div class="tline"></div>
+        <div class="tau"><div class="tav"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&q=80" alt="Priya"/></div><div><div class="tau-name">Priya Reddy</div><div class="tau-tag">Verified Buyer · Hyderabad</div></div></div>
+      </div>
+      <div class="tcard">
+        <span class="tq">"</span>
+        <div class="tstars">★★★★★</div>
+        <p class="ttxt">Fast delivery, gorgeous packaging, and the product quality is premium. The face oil smells incredible and leaves my skin nourished every single morning. 100% recommend!</p>
+        <div class="tline"></div>
+        <div class="tau"><div class="tav"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="Arjun"/></div><div><div class="tau-name">Arjun Sharma</div><div class="tau-tag">Verified Buyer · Mumbai</div></div></div>
+      </div>
+      <div class="tcard">
+        <span class="tq">"</span>
+        <div class="tstars">★★★★★</div>
+        <p class="ttxt">Finally a brand that delivers on its clean beauty promise. Ingredients are transparent, results are real, packaging is stunning. 10/10 — gifting to my whole family!</p>
+        <div class="tline"></div>
+        <div class="tau"><div class="tav"><img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?w=80&q=80" alt="Nisha"/></div><div><div class="tau-name">Nisha Kumar</div><div class="tau-tag">Verified Buyer · Bengaluru</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="sec" id="faq">
+  <div class="si">
+    <div class="sec-hrow fi" style="margin-bottom:48px;"><div><div class="sec-eye">Got Questions?</div><div class="sec-h2">Frequently <em>Asked</em></div></div></div>
+    <div class="faq-grid fi">
+      <div class="faq-col">
+        <div class="faq-item op"><div class="faq-q" onclick="toggleFaq(this)"><span>How long does shipping take?</span><span class="faq-icon">+</span></div><div class="faq-a">We dispatch within 24–48 hours. Standard delivery 3–5 business days across India. Express 1–2 day delivery available at checkout. Tracking link sent via SMS &amp; email once dispatched.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Are products safe for sensitive skin?</span><span class="faq-icon">+</span></div><div class="faq-a">Yes — all VELOUR products are dermatologist tested and gentle on sensitive skin. Free from parabens, sulfates, artificial fragrance, and common irritants. Always recommend a patch test before first use.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>What is your return policy?</span><span class="faq-icon">+</span></div><div class="faq-a">30-day hassle-free returns. Not 100% satisfied? Contact our support team and we'll arrange a full refund or exchange — no questions asked. Your satisfaction is our priority.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>How do I track my order?</span><span class="faq-icon">+</span></div><div class="faq-a">Once your order ships, you'll receive email and SMS with your tracking number. Visit our Track Order page and enter your order number for real-time delivery updates.</div></div>
+      </div>
+      <div class="faq-col">
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Are your products cruelty-free and vegan?</span><span class="faq-icon">+</span></div><div class="faq-a">Absolutely. VELOUR is 100% cruelty-free and certified vegan. We never test on animals and no ingredients are derived from animal sources. Proud members of PETA's Beauty Without Bunnies.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Do you offer discounts or subscriptions?</span><span class="faq-icon">+</span></div><div class="faq-a">Yes! New customers get 10% off with code VELOUR10. Our Subscribe &amp; Save gives 15% off every recurring order. We also run seasonal sales and exclusive email subscriber deals.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Can I use multiple products together?</span><span class="faq-icon">+</span></div><div class="faq-a">Our range is designed to work harmoniously together. Start with Cleanser, followed by Serum, finish with Face Oil. Our team can help build a personalised routine for your skin type.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>What payment methods do you accept?</span><span class="faq-icon">+</span></div><div class="faq-a">We accept all major credit/debit cards (Visa, Mastercard, Amex), UPI (GPay, PhonePe, Paytm), Net Banking, EMI on select banks, and Cash on Delivery across most pin codes in India.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NEWSLETTER ===================== -->
+<section class="nl-sec" id="nlsec">
+  <div class="nl-in fi">
+    <div class="nl-eye">Join The Family</div>
+    <div class="nl-h2">Get <em>10% Off</em><br/>Your First Order.</div>
+    <p class="nl-sub">Join 14,000+ skincare lovers. Exclusive rituals, new launch alerts, and member-only discounts — delivered to your inbox weekly.</p>
+    <div class="nl-form">
+      <input class="nl-inp" type="email" placeholder="Your email address" id="nl-email"/>
+      <button class="nl-btn" onclick="subscribeNl()">Subscribe →</button>
+    </div>
+    <div class="nl-perks">
+      <span class="nl-perk">Exclusive Offers</span>
+      <span class="nl-perk">Early Access</span>
+      <span class="nl-perk">Skincare Tips</span>
+      <span class="nl-perk">No Spam, Ever</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="fm">
+    <div>
+      <div class="f-logo">VELOUR<em>.</em></div>
+      <p class="f-tag">Premium clean beauty crafted for the modern lifestyle. Ethical, effective, and beautifully made in India 🇮🇳<br/>Every product, every ingredient — chosen with intention.</p>
+      <div class="f-soc">
+        <a class="fs" href="#"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a class="fs" href="#"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a class="fs" href="#"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.95C18.88 4 12 4 12 4s-6.88 0-8.59.47A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+        <a class="fs" href="#"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div class="f-h">Quick Links</div>
+      <ul class="f-links"><li><a href="#products">Shop All</a></li><li><a href="#collections">Skincare</a></li><li><a href="#collections">Wellness</a></li><li><a href="#collections">Aromatherapy</a></li><li><a href="#products">New Arrivals</a></li><li><a href="#products">Best Sellers</a></li><li><a href="#">Gift Sets</a></li></ul>
+    </div>
+    <div>
+      <div class="f-h">Help &amp; Info</div>
+      <ul class="f-links"><li><a href="#faq">FAQ</a></li><li><a href="#">Shipping &amp; Returns</a></li><li><a href="#">Track My Order</a></li><li><a href="#">Contact Us</a></li><li><a href="#brand">About Us</a></li><li><a href="#">Sustainability</a></li><li><a href="#">Press &amp; Media</a></li></ul>
+    </div>
+    <div>
+      <div class="f-nl">
+        <h4>Stay in the loop</h4>
+        <p>Weekly skincare rituals and exclusive member-only deals, delivered to your inbox.</p>
+        <div class="f-nl-form">
+          <input class="f-nl-in" type="email" placeholder="Email address"/>
+          <button class="f-nl-btn" onclick="toast('Subscribed! Welcome to the VELOUR family ✦')">Join Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fb">
+    <div class="f-copy">© 2025 VELOUR. — All rights reserved. Made with ♥ for the Digital Heroes Shopify Challenge.</div>
+    <div class="f-pay"><span class="ptag">VISA</span><span class="ptag">MASTERCARD</span><span class="ptag">UPI</span><span class="ptag">PAYTM</span><span class="ptag">EMI</span><span class="ptag">COD</span></div>
+    <div class="f-pol"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Shipping Policy</a><a href="#">Returns</a></div>
+  </div>
+</footer>
+
+<!-- STICKY ATC -->
+<div id="satc">
+  <div class="satc-left">
+    <div class="satc-img"><img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200&q=80" alt="Serum"/></div>
+    <div>
+      <div class="satc-name">Radiance Glow Serum 30ml</div>
+      <div class="satc-price">₹1,299 &nbsp;<span style="font-size:11px;color:var(--gray);font-weight:400;text-decoration:line-through;">₹1,899</span></div>
+    </div>
+  </div>
+  <button class="satc-btn" onclick="addToCart('Radiance Glow Serum',1299,'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200&q=80')">Add to Cart</button>
+</div>
+
+</div><!-- /store -->
+
+<script>
+/* ===== CURSOR ===== */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,fx=0,fy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function t(){fx+=(mx-fx)*.12;fy+=(my-fy)*.12;cur2.style.left=fx+'px';cur2.style.top=fy+'px';requestAnimationFrame(t);})();
+document.querySelectorAll('a,button,.pc,.cc,.tcard,.fs').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+
+/* ===== PASSWORD ===== */
+function checkPw(){
+  const v=document.getElementById('pw-in').value;
+  const e=document.getElementById('pw-err');
+  if(v==='Test@123'){
+    document.getElementById('pw-screen').classList.add('exit');
+    setTimeout(()=>{
+      document.getElementById('pw-screen').style.display='none';
+      document.getElementById('store').style.display='block';
+      initIO();
+      setTimeout(()=>document.getElementById('pop-bg').classList.add('on'),3000);
+    },600);
+  } else {
+    e.textContent='Incorrect password. Please try again.';
+    document.getElementById('pw-in').style.borderColor='#E06060';
+    setTimeout(()=>{e.textContent='';document.getElementById('pw-in').style.borderColor='';},2400);
+  }
+}
+document.getElementById('pw-in').addEventListener('keypress',e=>{if(e.key==='Enter')checkPw();});
+
+/* ===== POPUP ===== */
+function closePop(){document.getElementById('pop-bg').classList.remove('on');}
+function submitPop(){
+  if(!document.getElementById('pop-email').value)return;
+  closePop();toast('Welcome! Code VELOUR10 gives 10% off your first order ✦');
+}
+
+/* ===== TOAST ===== */
+let tt;
+function toast(msg){
+  const el=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  el.classList.add('on');clearTimeout(tt);
+  tt=setTimeout(()=>el.classList.remove('on'),3200);
+}
+
+/* ===== CART ===== */
+let items=[];
+function openCart(){
+  closeWL();
+  document.getElementById('cart-bg').classList.add('on');
+  document.getElementById('cart').classList.add('on');
+}
+function closeCart(){
+  document.getElementById('cart-bg').classList.remove('on');
+  document.getElementById('cart').classList.remove('on');
+}
+function addToCart(name,price,img){
+  const ex=items.find(i=>i.name===name);
+  if(ex)ex.qty++;else items.push({name,price,qty:1,img:img||''});
+  renderCart();
+  toast(name+' added to your bag!');
+  openCart();
+}
+function chQty(i,d){
+  items[i].qty+=d;
+  if(items[i].qty<=0)items.splice(i,1);
+  renderCart();
+}
+function renderCart(){
+  const total=items.reduce((s,i)=>s+i.price*i.qty,0);
+  const cnt=items.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cc').textContent=cnt;
+  document.getElementById('csub').textContent='₹'+total.toLocaleString('en-IN');
+  document.getElementById('ctotal').textContent='₹'+total.toLocaleString('en-IN');
+  document.getElementById('cship').textContent=total>=999?'Free':'₹99';
+  const badge=document.getElementById('cbadge');
+  badge.textContent=cnt;badge.style.display=cnt?'flex':'none';
+  const body=document.getElementById('cb');
+  if(!items.length){
+    body.innerHTML='<div class="cart-empty"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="rgba(0,0,0,.15)" stroke-width="1"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><p>Your bag is empty</p></div>';
+    return;
+  }
+  body.innerHTML=items.map((it,i)=>`
+    <div class="ci">
+      <div class="ci-img">${it.img?`<img src="${it.img}" alt="${it.name}"/>`:`<div style="width:100%;height:100%;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gray);">IMG</div>`}</div>
+      <div style="flex:1;">
+        <div class="ci-name">${it.name}</div>
+        <div class="ci-var">Standard · 30ml</div>
+        <div class="ci-price">₹${(it.price*it.qty).toLocaleString('en-IN')}</div>
+        <div class="ci-qty">
+          <button class="ci-qb" onclick="chQty(${i},-1)">−</button>
+          <span style="font-size:13px;min-width:18px;text-align:center;">${it.qty}</span>
+          <button class="ci-qb" onclick="chQty(${i},1)">+</button>
+          <button class="ci-rm" onclick="chQty(${i},-999)">Remove</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function applyDisc(){
+  const c=document.getElementById('disc-code').value.trim().toUpperCase();
+  if(c==='VELOUR10'||c==='HERO10')toast('Discount '+c+' applied! 10% off your order ✦');
+  else toast('Invalid code. Try VELOUR10');
+}
+
+/* ===== WISHLIST ===== */
+let wishlist=[];
+
+function openWL(){
+  closeCart();
+  document.getElementById('wl-bg').classList.add('on');
+  document.getElementById('wl').classList.add('on');
+}
+function closeWL(){
+  document.getElementById('wl-bg').classList.remove('on');
+  document.getElementById('wl').classList.remove('on');
+}
+
+function toggleWish(btn){
+  const name=btn.dataset.name;
+  const price=parseInt(btn.dataset.price);
+  const img=btn.dataset.img||'';
+  const idx=wishlist.findIndex(w=>w.name===name);
+
+  if(idx===-1){
+    // ADD to wishlist
+    wishlist.push({name,price,img});
+    btn.classList.add('wishlisted');
+    btn.title='Remove from Wishlist';
+    toast('♥ '+name+' added to wishlist!');
+  } else {
+    // REMOVE from wishlist
+    wishlist.splice(idx,1);
+    btn.classList.remove('wishlisted');
+    btn.title='Add to Wishlist';
+    toast(name+' removed from wishlist');
+  }
+  renderWishlist();
+}
+
+function renderWishlist(){
+  const cnt=wishlist.length;
+  document.getElementById('wlc').textContent=cnt;
+
+  // nav badge
+  const badge=document.getElementById('wl-badge');
+  badge.textContent=cnt;
+  badge.style.display=cnt?'flex':'none';
+
+  const body=document.getElementById('wl-body');
+  const foot=document.getElementById('wl-foot');
+
+  if(!cnt){
+    body.innerHTML='<div class="wl-empty"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="rgba(0,0,0,.15)" stroke-width="1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><p>Your wishlist is empty</p></div>';
+    foot.style.display='none';
+    return;
+  }
+
+  foot.style.display='block';
+  body.innerHTML=wishlist.map((w,i)=>`
+    <div class="wl-item">
+      <button class="wl-item-remove" onclick="removeWish(${i})" title="Remove">×</button>
+      <div class="wl-item-img">${w.img?`<img src="${w.img}" alt="${w.name}"/>`:`<div style="width:100%;height:100%;background:var(--light);"></div>`}</div>
+      <div style="flex:1;">
+        <div class="wl-item-name">${w.name}</div>
+        <div class="wl-item-price">₹${w.price.toLocaleString('en-IN')}</div>
+        <button class="wl-item-atc" onclick="moveToCart(${i})">Add to Cart</button>
+      </div>
+    </div>`).join('');
+}
+
+function removeWish(i){
+  const name=wishlist[i].name;
+  wishlist.splice(i,1);
+  // un-highlight the heart button on the product card
+  document.querySelectorAll('.pwish').forEach(btn=>{
+    if(btn.dataset.name===name) btn.classList.remove('wishlisted');
+  });
+  renderWishlist();
+  toast('Removed from wishlist');
+}
+
+function moveToCart(i){
+  const w=wishlist[i];
+  addToCart(w.name,w.price,w.img);
+  // keep item in wishlist (user can remove separately) — or remove from wishlist:
+  // removeWish(i);  ← uncomment if you want "move" behaviour instead
+}
+
+function addAllToCart(){
+  if(!wishlist.length)return;
+  wishlist.forEach(w=>addToCart(w.name,w.price,w.img));
+  toast('All wishlist items added to cart ✦');
+  closeWL();
+}
+
+/* ===== SCROLL EFFECTS ===== */
+function initIO(){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fi').forEach(el=>io.observe(el));
+}
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('sc',scrollY>50);
+  document.getElementById('satc').classList.toggle('on',scrollY>600);
+});
+
+/* ===== FAQ ===== */
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const was=item.classList.contains('op');
+  document.querySelectorAll('.faq-item.op').forEach(i=>i.classList.remove('op'));
+  if(!was)item.classList.add('op');
+}
+
+/* ===== NEWSLETTER ===== */
+function subscribeNl(){
+  const v=document.getElementById('nl-email').value;
+  if(v&&v.includes('@')){toast('Subscribed! Check your inbox for your 10% code ✦');document.getElementById('nl-email').value='';}
+  else toast('Please enter a valid email address');
+}
+
+/* ===== SMOOTH SCROLL ===== */
+function gs(sel){document.querySelector(sel)?.scrollIntoView({behavior:'smooth'});}
+
+/* ===== VARIANT DOTS ===== */
+document.querySelectorAll('.vd').forEach(d=>{
+  d.addEventListener('click',function(){
+    this.closest('.pvars').querySelectorAll('.vd').forEach(v=>v.classList.remove('a'));
+    this.classList.add('a');
+  });
+});
+</script>
+</body>
+</html>
